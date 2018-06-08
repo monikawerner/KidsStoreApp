@@ -3,10 +3,13 @@ package com.example.android.kidsstoreapp.data;
 
 import android.provider.BaseColumns;
 
-/** API Contract for the KidsStore app. */
+/**
+ * API Contract for the KidsStore app.
+ */
 
 public final class KidsContract {
-    private KidsContract() {}
+    private KidsContract() {
+    }
 
     /**
      * Inner class that defines constant values for the kids products database table.

@@ -13,7 +13,9 @@ import com.example.android.kidsstoreapp.data.KidsContract.KidsEntry;
 
 public class CatalogActivity extends AppCompatActivity {
 
-    /** Database helper that will provide us access to the database */
+    /**
+     * Database helper that will provide us access to the database
+     */
     private KidsDbHelper mDbHelper;
 
     @Override
@@ -23,13 +25,14 @@ public class CatalogActivity extends AppCompatActivity {
 
         /** Access the database */
         mDbHelper = new KidsDbHelper(this);
+        insertProduct();
+        displayDatabaseInfo();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        insertProduct();
-        displayDatabaseInfo();
+
     }
 
     /**
@@ -41,16 +44,7 @@ public class CatalogActivity extends AppCompatActivity {
         KidsDbHelper mDbHelper = new KidsDbHelper(this);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String[] projection = {KidsEntry._ID,
-                KidsEntry.COLUMN_PRODUCT_NAME,
-                KidsEntry.COLUMN_PRICE,
-                KidsEntry.COLUMN_QUANTITY,
-                KidsEntry.COLUMN_SUPPLIER_NAME,
-                KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER,
-                KidsEntry.COLUMN_CATEGORY};
-
-
-        Cursor cursor = db.query(KidsEntry.TABLE_NAME, projection, null, null, null, null, null);
+        Cursor cursor = db.query(KidsEntry.TABLE_NAME, null, null, null, null, null, null);
         TextView displayView = (TextView) findViewById(R.id.text_view_kids_product);
 
         try {
@@ -70,11 +64,11 @@ public class CatalogActivity extends AppCompatActivity {
             int supplierPhoneNumberColumnIndex = cursor.getColumnIndex(KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER);
             int categoryColumnIndex = cursor.getColumnIndex(KidsEntry.COLUMN_CATEGORY);
 
-            /**  Iterate through all the returned rows in the cursor*/
+            /**  Iterate through all the returned rows in the cursor */
 
             while (cursor.moveToNext()) {
                 /**  Use that index to extract the String or Int value of the word
-                 // at the current row the cursor is on */
+                 at the current row the cursor is on */
                 int currentID = cursor.getInt(idColumnIndex);
                 String currentProductName = cursor.getString(productNameColumnIndex);
                 int currentPrice = cursor.getInt(priceColumnIndex);
@@ -94,11 +88,10 @@ public class CatalogActivity extends AppCompatActivity {
     }
 
     private void insertProduct() {
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        // Create a ContentValues object where column names are the keys,
-        // and kids bed attributes are the values.
+        /**Create a ContentValues object where column names are the keys,
+         and kids bed attributes are the values. */
         ContentValues values = new ContentValues();
         values.put(KidsEntry.COLUMN_PRODUCT_NAME, "Kids Bed");
         values.put(KidsEntry.COLUMN_PRICE, 300);

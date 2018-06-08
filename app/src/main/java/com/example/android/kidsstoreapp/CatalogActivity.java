@@ -1,9 +1,11 @@
 package com.example.android.kidsstoreapp;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.android.kidsstoreapp.data.KidsDbHelper;
@@ -26,6 +28,7 @@ public class CatalogActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        insertProduct();
         displayDatabaseInfo();
     }
 
@@ -88,6 +91,23 @@ public class CatalogActivity extends AppCompatActivity {
         } finally {
             cursor.close();
         }
+    }
+
+    private void insertProduct() {
+        // Gets the database in write mode
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        // Create a ContentValues object where column names are the keys,
+        // and kids bed attributes are the values.
+        ContentValues values = new ContentValues();
+        values.put(KidsEntry.COLUMN_PRODUCT_NAME, "Kids Bed");
+        values.put(KidsEntry.COLUMN_PRICE, 300);
+        values.put(KidsEntry.COLUMN_QUANTITY, 1);
+        values.put(KidsEntry.COLUMN_SUPPLIER_NAME, "Drewex");
+        values.put(KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER, "609848542");
+        values.put(KidsEntry.COLUMN_CATEGORY, KidsEntry.CATEGORY_KIDS_ROOM);
+        long newRowId = db.insert(KidsEntry.TABLE_NAME, null, values);
+        Log.v("Catalog Activity", "New row Id" + newRowId);
     }
 
 }

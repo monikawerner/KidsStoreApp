@@ -1,95 +1,78 @@
 package com.example.android.kidsstoreapp;
 
+import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-import com.example.android.kidsstoreapp.data.KidsDbHelper;
 import com.example.android.kidsstoreapp.data.KidsContract.KidsEntry;
 
-public class CatalogActivity extends AppCompatActivity {
+        /**
+        * Displays list of products that were entered and stored in the app.
+        */
 
-    /**
-     * Database helper that will provide us access to the database
-     */
-    private KidsDbHelper mDbHelper;
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int PRODUCT_LOADER = 0;
+    ProductCursorAdapter mCursorAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
 
-        /** Access the database */
-        mDbHelper = new KidsDbHelper(this);
-        insertProduct();
-        displayDatabaseInfo();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    /**
-     * Temporary helper method to display information in the onscreen TextView about the state of
-     * the kids products database.
-     */
-    private void displayDatabaseInfo() {
-
-        KidsDbHelper mDbHelper = new KidsDbHelper(this);
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        Cursor cursor = db.query(KidsEntry.TABLE_NAME, null, null, null, null, null, null);
-        TextView displayView = (TextView) findViewById(R.id.text_view_kids_product);
-
-        try {
-            /** Create a header in the Text View */
-            displayView.setText("The products table contains  " + cursor.getCount() + " kids products.\n\n");
-            displayView.append(KidsEntry._ID + " - " + KidsEntry.COLUMN_PRODUCT_NAME + " - "
-                    + KidsEntry.COLUMN_PRICE + " - " + KidsEntry.COLUMN_QUANTITY + " - "
-                    + KidsEntry.COLUMN_SUPPLIER_NAME + " - " + KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER + " - "
-                    + KidsEntry.COLUMN_CATEGORY + "\n");
-
-            /** Figure out the index of each column */
-            int idColumnIndex = cursor.getColumnIndex(KidsEntry._ID);
-            int productNameColumnIndex = cursor.getColumnIndex(KidsEntry.COLUMN_PRODUCT_NAME);
-            int priceColumnIndex = cursor.getColumnIndex(KidsEntry.COLUMN_PRICE);
-            int quantityColumnIndex = cursor.getColumnIndex(KidsEntry.COLUMN_QUANTITY);
-            int supplierNameColumnIndex = cursor.getColumnIndex(KidsEntry.COLUMN_SUPPLIER_NAME);
-            int supplierPhoneNumberColumnIndex = cursor.getColumnIndex(KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER);
-            int categoryColumnIndex = cursor.getColumnIndex(KidsEntry.COLUMN_CATEGORY);
-
-            /**  Iterate through all the returned rows in the cursor */
-
-            while (cursor.moveToNext()) {
-                /**  Use that index to extract the String or Int value of the word
-                 at the current row the cursor is on */
-                int currentID = cursor.getInt(idColumnIndex);
-                String currentProductName = cursor.getString(productNameColumnIndex);
-                int currentPrice = cursor.getInt(priceColumnIndex);
-                int currentQuantity = cursor.getInt(quantityColumnIndex);
-                String currentSupplierName = cursor.getString(supplierNameColumnIndex);
-                String currentSupplierPhoneNumber = cursor.getString(supplierPhoneNumberColumnIndex);
-                int currentCategory = cursor.getInt(categoryColumnIndex);
-
-                /** Display the values from each column of the current row in the cursor in the TextView */
-                displayView.append(("\n" + currentID + " - " +
-                        currentProductName + " - " + currentPrice + " - " + currentQuantity + " - "
-                        + currentSupplierName + " - " + currentSupplierPhoneNumber + " - " + currentCategory));
+        // Setup FAB to open EditorActivity
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+                startActivity(intent);
             }
-        } finally {
-            cursor.close();
-        }
+        });
+
+        // Find the ListView which will be populated with the product data
+        ListView listView = (ListView) findViewById(R.id.list);
+
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById(R.id.empty_view);
+        listView.setEmptyView(emptyView);
+
+
+        mCursorAdapter = new ProductCursorAdapter(this, null);
+        listView.setAdapter(mCursorAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+                Uri currentProductUri = ContentUris.withAppendedId(KidsEntry.CONTENT_URI, id);
+                intent.setData(currentProductUri);
+                startActivity(intent);
+
+            }
+        });
+        getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
+
     }
+
+
 
     private void insertProduct() {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         /**Create a ContentValues object where column names are the keys,
          and kids bed attributes are the values. */
         ContentValues values = new ContentValues();
@@ -99,9 +82,31 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(KidsEntry.COLUMN_SUPPLIER_NAME, "Drewex");
         values.put(KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER, "609848542");
         values.put(KidsEntry.COLUMN_CATEGORY, KidsEntry.CATEGORY_KIDS_ROOM);
-        long newRowId = db.insert(KidsEntry.TABLE_NAME, null, values);
-        Log.v("Catalog Activity", "New row Id" + newRowId);
+        Uri newUri = getContentResolver().insert(KidsEntry.CONTENT_URI, values);
     }
 
-}
+            @Override
+            public Loader<Cursor> onCreateLoader(int i, Bundle args) {
+                String[] projection = {
+                        KidsEntry._ID,
+                        KidsEntry.COLUMN_PRODUCT_NAME,
+                        KidsEntry.COLUMN_PRICE };
+
+                return new CursorLoader(this, KidsEntry.CONTENT_URI, projection, null, null, null);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                mCursorAdapter.swapCursor(data);
+
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+                mCursorAdapter.swapCursor(null);
+
+            }
+        }
+
+
 

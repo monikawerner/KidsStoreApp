@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context="com.example.android.kidsstoreapp.CatalogActivity">
 
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+
     <TextView
         android:id="@+id/text_view_kids_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/catalog_text_view_padding"
-        android:textColor="@color/black"
-        tools:text="@tools:sample/date/ddmmyy" />
+        android:textColor="@color/black" />
 
-</LinearLayout>
+</RelativeLayout>

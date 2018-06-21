@@ -3,4 +3,18 @@
     <string name="welcome">Welcome to our Kids Store</string>
     <string name="products">Products</string>
     <string name="add">Add product</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_delete_all">Delete</string>
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+    <string name="overview">Overview</string>
+    <string name="hint_product_name">Name</string>
+    <string name="hint_supplier_name">Supplier Name</string>
+    <string name="hint_supplier_phone_number">Supplier Phone Number</string>
+    <string name="category">Category</string>
+    <string name="price">Price</string>
+    <string name="hint_price">Price</string>
+    <string name="price_unit">zl</string>
+    <string name="quantity">Quantity</string>
+    <string name="hint_quantity">Quantity</string>
 </resources>

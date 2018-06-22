@@ -81,6 +81,7 @@
 
     <!-- Quantity -->
     <LinearLayout
+        android:id="@+id/container_quantity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -90,12 +91,18 @@
             android:text="@string/quantity"
             style="@style/CategoryStyle" />
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+
         <!-- Quantity field -->
         <EditText
             android:id="@+id/edit_quantity"
             android:hint="@string/hint_quantity"
             android:inputType="textCapWords"
             style="@style/EditorFieldStyle" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Price category -->
@@ -117,9 +124,9 @@
             android:layout_weight="2"
             android:paddingLeft="4dp">
 
-            <!-- Weight field -->
+            <!-- Price field -->
             <EditText
-                android:id="@+id/edit_pet_weight"
+                android:id="@+id/edit_price"
                 android:hint="@string/hint_price"
                 android:inputType="number"
                 style="@style/EditorFieldStyle" />

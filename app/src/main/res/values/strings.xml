@@ -1,14 +1,20 @@
 <resources>
-    <string name="app_name">KidsStoreApp</string>
-    <string name="welcome">Welcome to our Kids Store</string>
-    <string name="products">Products</string>
+    <string name="app_name">Kids Store Inventory</string>
+    <string name="welcome">Welcome to the Kids Store Inventory</string>
+    <string name="catalog">Catalog</string>
+    <string name="inventory">Inventory</string>
     <string name="add">Add product</string>
+    <string name="products">Products</string>
     <string name="action_save">Save</string>
+    <string name="empty_inventory">In the inventory there is not any product</string>
+    <string name="add_product">Add new product</string>
     <string name="action_delete">Delete</string>
-    <string name="action_delete_all">Delete</string>
+    <string name="action_delete_all">Delete All</string>
+    <string name="delete_all_msg">Delete all products?</string>
     <string name="action_insert_dummy_data">Insert Dummy Data</string>
-    <string name="overview">Overview</string>
+    <string name="product_name">Product Name</string>
     <string name="hint_product_name">Name</string>
+    <string name="supplier">Supplier</string>
     <string name="hint_supplier_name">Supplier Name</string>
     <string name="hint_supplier_phone_number">Supplier Phone Number</string>
     <string name="category">Category</string>
@@ -36,4 +42,5 @@
     <string name="cancel">Cancel</string>
     <string name="editor_delete_failed">There was a problem with deleting the product.</string>
     <string name="editor_delete_successful">The product has been deleted.</string>
+    <string name="sale">Sale</string>
 </resources>

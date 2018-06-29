@@ -1,9 +1,11 @@
 package com.example.android.kidsstoreapp;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -20,15 +22,15 @@ import android.widget.ListView;
 
 import com.example.android.kidsstoreapp.data.KidsContract.KidsEntry;
 
-        /**
+/**
         * Displays list of products that were entered and stored in the app.
         */
 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+
     private static final int PRODUCT_LOADER = 0;
     ProductCursorAdapter mCursorAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         setContentView(R.layout.activity_catalog);
 
         // Setup FAB to open EditorActivity
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,6 +46,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 startActivity(intent);
             }
         });
+
+
 
         // Find the ListView which will be populated with the product data
         ListView listView = (ListView) findViewById(R.id.list);
@@ -78,7 +82,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         ContentValues values = new ContentValues();
         values.put(KidsEntry.COLUMN_PRODUCT_NAME, "Kids Bed");
         values.put(KidsEntry.COLUMN_PRICE, 300);
-        values.put(KidsEntry.COLUMN_QUANTITY, 1);
+        values.put(KidsEntry.COLUMN_QUANTITY, 8);
         values.put(KidsEntry.COLUMN_SUPPLIER_NAME, "Drewex");
         values.put(KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER, "609848542");
         values.put(KidsEntry.COLUMN_CATEGORY, KidsEntry.CATEGORY_KIDS_ROOM);
@@ -109,9 +113,14 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                     case R.id.action_insert_dummy_data:
                         insertProduct();
                         return true;
-                    // Respond to a click on the "Delete all entries" menu option
+                    // Respond to a click on the "Delete" menu option
                     case R.id.action_delete_all:
-                        deleteAllProducts();
+                        showDeleteConfirmationDialog();
+                        return true;
+                    // Respond to a click on the "Add a new book" menu option
+                    case R.id.action_add_product:
+                        Intent intentEditProduct = new Intent(CatalogActivity.this, EditorActivity.class);
+                        startActivity(intentEditProduct);
                         return true;
                 }
                 return super.onOptionsItemSelected(item);
@@ -122,7 +131,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 String[] projection = {
                         KidsEntry._ID,
                         KidsEntry.COLUMN_PRODUCT_NAME,
-                        KidsEntry.COLUMN_PRICE };
+                        KidsEntry.COLUMN_PRICE,
+                        KidsEntry.COLUMN_QUANTITY,
+                        KidsEntry.COLUMN_SUPPLIER_NAME,
+                        KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER};
 
                 return new CursorLoader(this, KidsEntry.CONTENT_URI, projection, null, null, null);
             }
@@ -138,7 +150,29 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 mCursorAdapter.swapCursor(null);
 
             }
-        }
+    /**
+     * Prompt the user to confirm that they want to delete this book.
+     */
+    private void showDeleteConfirmationDialog() {
 
-
-
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_all_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                deleteAllProducts();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+}

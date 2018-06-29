@@ -14,17 +14,17 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         /** Set OnClickListener on the TextView to start another activity */
-        TextView products = (TextView) findViewById(R.id.products);
-        products.setOnClickListener(new View.OnClickListener() {
+        TextView catalog = findViewById(R.id.catalog);
+        catalog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent productsIntent = new Intent(WelcomeActivity.this, CatalogActivity.class);
-                startActivity(productsIntent);
+                Intent catalogIntent = new Intent(WelcomeActivity.this, CatalogActivity.class);
+                startActivity(catalogIntent);
             }
         });
 
         /** Set OnClickListener on the TextView to start another activity */
-        TextView add = (TextView) findViewById(R.id.add);
+        TextView add = findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

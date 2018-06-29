@@ -8,10 +8,25 @@
     tools:context="com.example.android.kidsstoreapp.WelcomeActivity">
 
     <TextView
+        android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:fontFamily="casual"
+        android:textSize="18sp"
         android:text="@string/welcome"
-        android:layout_centerInParent="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/welcome_image"/>
+
+
+    <ImageView
+        android:id="@+id/welcome_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/welcome_image"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,11 +36,14 @@
         android:paddingBottom="@dimen/padding">
 
         <TextView
-            android:id="@+id/products"
+            android:id="@+id/catalog"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/products"
+            android:textColor="@color/black"
+            android:fontFamily="casual"
+            android:textStyle="bold"
+            android:text="@string/catalog"
             android:gravity="center"/>
 
         <TextView
@@ -33,7 +51,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             android:text="@string/add"
+            android:fontFamily="casual"
             android:gravity="center"/>
 
     </LinearLayout>

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.media.Image;
 import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,7 +33,11 @@ import com.example.android.kidsstoreapp.data.KidsContract;
     */
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-       private static final int EXISTING_PRODUCT_LOADER = 0;
+    //integer variable for quantity
+    int quantity;
+
+
+    private static final int EXISTING_PRODUCT_LOADER = 0;
        /**
         * Content URI for the existing product (null if it's a new product)
         */
@@ -84,6 +91,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+
         Intent intent = getIntent();
         mCurrentProductUri = intent.getData();
 
@@ -95,13 +103,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
         }
 
+
         /** Find all relevant views that we will need to read user input from */
-        mNameEditText = (EditText) findViewById(R.id.edit_product_name);
-        mSupplierNameEditText = (EditText) findViewById(R.id.edit_supplier_name);
-        mSupplierPhoneNumberEditText = (EditText) findViewById(R.id.edit_supplier_phone_number);
-        mCategorySpinner = (Spinner) findViewById(R.id.spinner_category);
-        mQuantityEditText = (EditText) findViewById(R.id.edit_quantity);
-        mPriceEditText = (EditText) findViewById(R.id.edit_price);
+        mNameEditText = findViewById(R.id.edit_product_name);
+        mSupplierNameEditText = findViewById(R.id.edit_supplier_name);
+        mSupplierPhoneNumberEditText = findViewById(R.id.edit_supplier_phone_number);
+        mCategorySpinner = findViewById(R.id.spinner_category);
+        mQuantityEditText = findViewById(R.id.edit_quantity);
+        mPriceEditText = findViewById(R.id.edit_price);
+        mQuantityEditText.setText("0");
+        mPriceEditText.setText("0");
 
         mNameEditText.setOnTouchListener(mTouchListener);
         mSupplierNameEditText.setOnTouchListener(mTouchListener);
@@ -111,6 +122,38 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPriceEditText.setOnTouchListener(mTouchListener);
 
         setupSpinner();
+
+        ImageView minusButton = findViewById(R.id.minus_button);
+        minusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quantity = Integer.parseInt(mQuantityEditText.getText().toString().trim());
+                if (quantity <= 0) {
+                    Toast.makeText(getApplicationContext(), "quantity 0", Toast.LENGTH_LONG).show();
+                } else {
+                    quantity = quantity - 1;
+                    mProductHasChanged = true;
+                    mQuantityEditText.setText(Integer.toString(quantity));
+                    if (quantity <=3) {
+                        Toast.makeText(getApplicationContext(), "quantity few", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+
+        ImageView plusButton = findViewById(R.id.plus_button);
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quantity = Integer.parseInt(mQuantityEditText.getText().toString().trim());
+                quantity = quantity + 1;
+                mProductHasChanged = true;
+                mQuantityEditText.setText(Integer.toString(quantity));
+                if (quantity <=3) {
+                    Toast.makeText(getApplicationContext(), "quantity few", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     /**
@@ -177,6 +220,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         ContentValues values = new ContentValues();
         values.put(KidsContract.KidsEntry.COLUMN_PRODUCT_NAME, nameString);
         values.put(KidsContract.KidsEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
+        values.put(KidsContract.KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER, supplierPhoneNumberString);
         values.put(KidsContract.KidsEntry.COLUMN_CATEGORY, mCategory);
         values.put(KidsContract.KidsEntry.COLUMN_QUANTITY, quantityString);
         values.put(KidsContract.KidsEntry.COLUMN_PRICE, priceString);

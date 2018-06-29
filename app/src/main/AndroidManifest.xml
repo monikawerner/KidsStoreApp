@@ -11,16 +11,23 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".CatalogActivity"
+            android:label="@string/inventory"
             android:parentActivityName=".WelcomeActivity" />
         <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".EditorActivity"
             android:parentActivityName=".WelcomeActivity" />
+
+        <provider
+            android:name=".data.KidsProvider"
+            android:authorities="com.example.android.kidsstoreapp"
+            android:exported="false" />
 
     </application>
 

@@ -95,7 +95,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityEditText = findViewById(R.id.edit_quantity);
         mPriceEditText = findViewById(R.id.edit_price);
         mQuantityEditText.setText("0");
-        mPriceEditText.setText("0");
+
 
         mNameEditText.setOnTouchListener(mTouchListener);
         mSupplierNameEditText.setOnTouchListener(mTouchListener);
@@ -212,24 +212,24 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this,"Product requires a name.", Toast.LENGTH_LONG).show();
             return;
         }
-        String supplierNameString = mSupplierNameEditText.getText().toString().trim();
-        if (nameString.equals("")) {
-            Toast.makeText(this,"Please enter the supplier name.", Toast.LENGTH_LONG).show();
-            return;
-        }
-        String supplierPhoneNumberString = mSupplierPhoneNumberEditText.getText().toString().trim();
-        if (supplierPhoneNumberString.equals("")) {
-            Toast.makeText(this,"Please enter the supplier phone.", Toast.LENGTH_LONG).show();
-            return;
-        }
         String quantityString = mQuantityEditText.getText().toString().trim();
         if (quantityString.equals("")) {
             Toast.makeText(this,"Please enter the valid quantity.", Toast.LENGTH_LONG).show();
             return;
         }
         String priceString = mPriceEditText.getText().toString().trim();
-        if (nameString.equals("")) {
+        if (priceString.equals("")) {
             Toast.makeText(this,"Please enter the valid price.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String supplierNameString = mSupplierNameEditText.getText().toString().trim();
+        if (supplierNameString.equals("")) {
+            Toast.makeText(this,"Please enter the supplier name.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String supplierPhoneNumberString = mSupplierPhoneNumberEditText.getText().toString().trim();
+        if (supplierPhoneNumberString.equals("")) {
+            Toast.makeText(this,"Please enter the supplier phone.", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -317,7 +317,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 saveProduct();
-                finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
@@ -420,13 +419,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String supplierPhoneNumber = cursor.getString(supplierPhoneNumberColumnIndex);
             int category = cursor.getInt(categoryColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);
-            int price = cursor.getInt(priceColumnIndex);
+            double price = cursor.getDouble(priceColumnIndex);
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
             mSupplierNameEditText.setText(supplierName);
             mSupplierPhoneNumberEditText.setText(supplierPhoneNumber);
             mQuantityEditText.setText(Integer.toString(quantity));
-            mPriceEditText.setText(Integer.toString(price));
+            mPriceEditText.setText(Double.toString(price));
 
             // Category is a dropdown spinner, so map the constant value from the database
             // into one of the dropdown options.

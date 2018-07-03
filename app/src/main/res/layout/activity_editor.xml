@@ -107,7 +107,7 @@
                     android:fontFamily="sans-serif-light"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:hint="0"
-                    android:inputType="textCapWords" />
+                    android:inputType="number" />
 
                 <ImageView
                     android:id="@+id/plus_button"
@@ -142,8 +142,8 @@
                 <EditText
                     android:id="@+id/edit_price"
                     style="@style/EditorFieldStyle"
-                    android:hint="@string/hint_price"
-                    android:inputType="number" />
+                    android:hint="0"
+                    android:inputType="numberDecimal" />
 
                 <!-- Units for price (zl) -->
                 <TextView

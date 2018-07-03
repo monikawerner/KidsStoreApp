@@ -270,14 +270,14 @@ public class KidsProvider extends ContentProvider {
 
     private void validateCategory(ContentValues values) {
         Integer category = values.getAsInteger(KidsEntry.COLUMN_CATEGORY);
-        if (category != null || !KidsEntry.isValidCategory(category)) {
+        if (category != null && !KidsEntry.isValidCategory(category)) {
             throw new IllegalArgumentException("Product requires valid category");
         }
     }
 
     private void validatePrice(ContentValues values) {
         Double price = values.getAsDouble(KidsEntry.COLUMN_PRICE);
-        if (price != null && price < 0.0) {
+        if (price != null && price < 0.00) {
             throw new IllegalArgumentException("Price can't be less than zero.");
         }
     }

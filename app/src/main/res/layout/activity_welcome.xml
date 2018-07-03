@@ -17,7 +17,7 @@
         android:textSize="18sp"
         android:text="@string/welcome"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/welcome_image"/>
+        android:layout_above="@+id/welcome_image"/>
 
 
     <ImageView

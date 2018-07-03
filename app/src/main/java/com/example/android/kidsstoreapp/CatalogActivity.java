@@ -116,8 +116,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete_all:
                 showDeleteConfirmationDialog();
+                Toast.makeText(this, "All products have been deleted", Toast.LENGTH_SHORT).show();
                 return true;
-            // Respond to a click on the "Add a new book" menu option
+            // Respond to a click on the "Add a new product" menu option
             case R.id.action_add_product:
                 Intent intentEditProduct = new Intent(CatalogActivity.this, EditorActivity.class);
                 startActivity(intentEditProduct);

@@ -10,11 +10,12 @@ import android.provider.BaseColumns;
  */
 
 public final class KidsContract {
-    private KidsContract() {}
-
     public static final String CONTENT_AUTHORITY = "com.example.android.kidsstoreapp";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_KIDS = "kids";
+
+    private KidsContract() {
+    }
 
     /**
      * Inner class that defines constant values for the kids products database table.
@@ -24,13 +25,13 @@ public final class KidsContract {
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_KIDS);
 
         /**
-         * The MIME type of the {@link #CONTENT_URI} for a list of products.
+         * The MIME type of the CONTENT_URI for a list of products.
          */
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_KIDS;
 
         /**
-         * The MIME type of the {@link #CONTENT_URI} for a single product.
+         * The MIME type of the CONTENT_URI for a single product.
          */
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_KIDS;

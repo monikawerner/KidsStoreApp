@@ -8,8 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.media.Image;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,50 +27,33 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.kidsstoreapp.data.KidsContract;
+import com.example.android.kidsstoreapp.data.KidsContract.KidsEntry;
 
 /**
     * Allows user to create a new product or edit an existing one.
     */
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    //integer variable for quantity
     int quantity;
 
 
     private static final int EXISTING_PRODUCT_LOADER = 0;
-       /**
-        * Content URI for the existing product (null if it's a new product)
-        */
+
        private Uri mCurrentProductUri;
 
-       /**
-        * EditText field to enter the product name
-        */
+
        private EditText mNameEditText;
-       /**
-        * EditText field to enter the supplier name
-        */
+
        private EditText mSupplierNameEditText;
-       /**
-        * EditText field to enter the supplier phone number
-        */
+
        private EditText mSupplierPhoneNumberEditText;
 
         private Spinner mCategorySpinner;
-        /**
-        * Category of the product. The possible values are:
-        * 0 for other, 1 for clothes, 2 for toys, 3 for kids room, 4 for health and hygiene.
-        */
+
         private int mCategory = KidsContract.KidsEntry.CATEGORY_OTHER;
 
-        /**
-        * EditText field to enter the quantity of rhe product
-        */
         private EditText mQuantityEditText;
 
-        /**
-        * EditText field to enter the price of rhe product
-        */
          private EditText mPriceEditText;
 
          private boolean mProductHasChanged = false;
@@ -129,13 +112,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 quantity = Integer.parseInt(mQuantityEditText.getText().toString().trim());
                 if (quantity <= 0) {
-                    Toast.makeText(getApplicationContext(), "quantity 0", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "quantity 0", Toast.LENGTH_SHORT).show();
                 } else {
                     quantity = quantity - 1;
                     mProductHasChanged = true;
                     mQuantityEditText.setText(Integer.toString(quantity));
                     if (quantity <=3) {
-                        Toast.makeText(getApplicationContext(), "quantity few", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "quantity few", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -150,8 +133,36 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 mProductHasChanged = true;
                 mQuantityEditText.setText(Integer.toString(quantity));
                 if (quantity <=3) {
-                    Toast.makeText(getApplicationContext(), "quantity few", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "quantity few", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        /** Set up FAB  to save the product */
+        FloatingActionButton saveProduct = (FloatingActionButton) findViewById(R.id.save);
+        saveProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveProduct();
+            }
+        });
+
+        /** Set up FAB  to delete the product */
+        FloatingActionButton deleteProduct = (FloatingActionButton) findViewById(R.id.delete);
+        deleteProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDeleteConfirmationDialog();
+            }
+        });
+
+        Button orderButton = findViewById(R.id.order_button);
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phone = mSupplierPhoneNumberEditText.getText().toString().trim();
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                startActivity(intent);
             }
         });
     }
@@ -160,41 +171,33 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * Setup the dropdown spinner that allows the user to select the category of the product.
      */
     private void setupSpinner() {
-        // Create adapter for spinner. The list options are from the String array it will use
-        // the spinner will use the default layout
         ArrayAdapter categorySpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.array_category_options, android.R.layout.simple_spinner_item);
-
-        // Specify dropdown layout style - simple list view with 1 item per line
         categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-
-        // Apply the adapter to the spinner
         mCategorySpinner.setAdapter(categorySpinnerAdapter);
 
-        // Set the integer mSelected to the constant values
         mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.category_clothes))) {
-                        mCategory = KidsContract.KidsEntry.CATEGORY_CLOTHES;
+                        mCategory = KidsEntry.CATEGORY_CLOTHES;
                     } else if (selection.equals(getString(R.string.category_toys))) {
-                        mCategory = KidsContract.KidsEntry.CATEGORY_TOYS;
+                        mCategory = KidsEntry.CATEGORY_TOYS;
                     } else if (selection.equals(getString(R.string.category_kids_room))) {
-                        mCategory = KidsContract.KidsEntry.CATEGORY_KIDS_ROOM;
+                        mCategory = KidsEntry.CATEGORY_KIDS_ROOM;
                     } else if (selection.equals(getString(R.string.category_health_and_hygiene))) {
-                        mCategory = KidsContract.KidsEntry.CATEGORY_HEALTH_AND_HYGIENE;
+                        mCategory = KidsEntry.CATEGORY_HEALTH_AND_HYGIENE;
                     } else {
-                        mCategory = KidsContract.KidsEntry.CATEGORY_OTHER;
+                        mCategory = KidsEntry.CATEGORY_OTHER;
                     }
                 }
             }
 
-            // Because AdapterView is an abstract class, onNothingSelected must be defined
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mCategory = KidsContract.KidsEntry.CATEGORY_OTHER;
+                mCategory = KidsEntry.CATEGORY_OTHER;
             }
         });
     }
@@ -204,10 +207,31 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
          */
     private void saveProduct() {
         String nameString = mNameEditText.getText().toString().trim();
+
+        if (nameString.equals("")) {
+            Toast.makeText(this,"Product requires a name.", Toast.LENGTH_LONG).show();
+            return;
+        }
         String supplierNameString = mSupplierNameEditText.getText().toString().trim();
+        if (nameString.equals("")) {
+            Toast.makeText(this,"Please enter the supplier name.", Toast.LENGTH_LONG).show();
+            return;
+        }
         String supplierPhoneNumberString = mSupplierPhoneNumberEditText.getText().toString().trim();
+        if (supplierPhoneNumberString.equals("")) {
+            Toast.makeText(this,"Please enter the supplier phone.", Toast.LENGTH_LONG).show();
+            return;
+        }
         String quantityString = mQuantityEditText.getText().toString().trim();
+        if (quantityString.equals("")) {
+            Toast.makeText(this,"Please enter the valid quantity.", Toast.LENGTH_LONG).show();
+            return;
+        }
         String priceString = mPriceEditText.getText().toString().trim();
+        if (nameString.equals("")) {
+            Toast.makeText(this,"Please enter the valid price.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (mCurrentProductUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(supplierNameString) &&
@@ -215,8 +239,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 TextUtils.isEmpty(priceString)&& mCategory == KidsContract.KidsEntry.CATEGORY_OTHER) {return;}
 
 
-        // Create a ContentValues object where column names are the keys,
-        // and product attributes from the editor are the values.
+        /** Create a ContentValues object where column names are the keys,
+         * and product attributes from the editor are the values. */
         ContentValues values = new ContentValues();
         values.put(KidsContract.KidsEntry.COLUMN_PRODUCT_NAME, nameString);
         values.put(KidsContract.KidsEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
@@ -233,14 +257,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Uri newUri = getContentResolver().insert(KidsContract.KidsEntry.CONTENT_URI, values);
 
             // Show a toast message depending on whether or not the insertion was successful.
-            if (newUri == null) {
+            if (newUri == null&& TextUtils.isEmpty(nameString) && TextUtils.isEmpty(supplierNameString)
+                    && TextUtils.isEmpty(supplierPhoneNumberString) && TextUtils.isEmpty(quantityString)
+                    && TextUtils.isEmpty(priceString))  {
                 // If the new content URI is null, then there was an error with insertion.
                 Toast.makeText(this, getString(R.string.editor_insert_failed),
                         Toast.LENGTH_SHORT).show();
+                return;
             } else {
                 // Otherwise, the insertion was successful and we can display a toast.
                 Toast.makeText(this, getString(R.string.editor_insert_successful),
                         Toast.LENGTH_SHORT).show();
+                finish();
             }
         } else {
             // Otherwise this is an EXISTING product, so update the product with content URI: mCurrentProductUri
@@ -297,7 +325,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 showDeleteConfirmationDialog();
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar
-            case android.R.id.home:
+            case R.id.home:
                 // If the product hasn't changed, continue with navigating up to parent activity
                 // which is the {@link CatalogActivity}.
                 if (!mProductHasChanged) {
@@ -458,51 +486,38 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
 
     private void showDeleteConfirmationDialog() {
-        // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Delete" button, so delete the product.
+
                 deleteProduct();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the product.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
             }
         });
 
-        // Create and show the AlertDialog
+        /** Create and show the AlertDialog */
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 
-    /**Perform the deletion of the pet in the database.
+    /**Perform the deletion of the product in the database.
      */
     private void deleteProduct() {
-        // Only perform the delete if this is an existing product.
         if (mCurrentProductUri != null) {
-            // Call the ContentResolver to delete the product at the given content URI.
-            // Pass in null for the selection and selection args because the mCurrentProductUri
-            // content URI already identifies the product that we want.
             int rowsDeleted = getContentResolver().delete(mCurrentProductUri, null, null);
-
-            // Show a toast message depending on whether or not the delete was successful.
             if (rowsDeleted == 0) {
-                // If no rows were deleted, then there was an error with the delete.
                 Toast.makeText(this, getString(R.string.editor_delete_failed),
                         Toast.LENGTH_SHORT).show();
             } else {
-                // Otherwise, the delete was successful and we can display a toast.
                 Toast.makeText(this, getString(R.string.editor_delete_successful),
                         Toast.LENGTH_SHORT).show();
             } }
-        // Close the activity
         finish();
     } }

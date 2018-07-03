@@ -9,10 +9,12 @@ import com.example.android.kidsstoreapp.data.KidsContract.KidsEntry;
 /**
  * Database helper for KidsStore app. Manages database creation and version management.
  */
-
 public class KidsDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "kids.db";
+
+    private static final String SQL_DELETE_PRODUCTS_ENTRIES =
+            "DROP TABLE IF EXISTS " + KidsEntry.TABLE_NAME;
 
     public KidsDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,10 +29,10 @@ public class KidsDbHelper extends SQLiteOpenHelper {
                 + KidsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + KidsEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL, "
                 + KidsEntry.COLUMN_PRICE + " INTEGER NOT NULL, "
-                + KidsEntry.COLUMN_QUANTITY + " INTEGER NOT NULL, "
+                + KidsEntry.COLUMN_QUANTITY + " INTEGER NOT NULL DEFAULT 0, "
                 + KidsEntry.COLUMN_CATEGORY + " INTEGER NOT NULL DEFAULT 0, "
                 + KidsEntry.COLUMN_SUPPLIER_NAME + " TEXT NOT NULL, "
-                + KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER + " TEXT NOT NULL);";
+                + KidsEntry.COLUMN_SUPPLIER_PHONE_NUMBER + " TEXT);";
 
         db.execSQL(SQL_CREATE_KIDS_PRODUCTS_TABLE);
     }
@@ -40,7 +42,8 @@ public class KidsDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(SQL_DELETE_PRODUCTS_ENTRIES);
+        onCreate(db);
     }
 }
 

@@ -5,7 +5,7 @@
     tools:context=".CatalogActivity">
 
     <item
-        android:id="@+id/action_insert_dummy_data"
+        android:id="@+id/action_insert_dummy_product"
         android:title="@string/action_insert_dummy_data"
         app:showAsAction="never" />
 
@@ -17,5 +17,10 @@
     <item
         android:id="@+id/action_add_product"
         android:title="@string/add_product"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/home"
+        android:title="@string/home"
         app:showAsAction="never" />
 </menu>

@@ -50,7 +50,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
 
         /**Find the ListView which will be populated with the product data */
-        ListView listView = (ListView) findViewById(R.id.list);
+        ListView listView = findViewById(R.id.list);
 
         /** Find and set empty view on the ListView, so that it only shows when the list has 0 items. */
         View emptyView = findViewById(R.id.empty_view);
@@ -98,31 +98,30 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_catalog.xml file.
-        // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_catalog, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
-            // Respond to a click on the "Insert dummy product" menu option
+            /** Respond to a click on the "Insert dummy product" menu option */
             case R.id.action_insert_dummy_product:
                 insertProduct();
-                Toast.makeText(this, "Dummy Product has been inserted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getText(R.string.insert_dummy_product_msg), Toast.LENGTH_SHORT).show();
                 return true;
-            // Respond to a click on the "Delete" menu option
+            /** Respond to a click on the "Delete" menu option */
             case R.id.action_delete_all:
                 showDeleteConfirmationDialog();
-                Toast.makeText(this, "All products have been deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getText(R.string.delete_all__products_msg), Toast.LENGTH_SHORT).show();
                 return true;
-            // Respond to a click on the "Add a new product" menu option
+
+            /** Respond to a click on the "Add a new product" menu option */
             case R.id.action_add_product:
                 Intent intentEditProduct = new Intent(CatalogActivity.this, EditorActivity.class);
                 startActivity(intentEditProduct);
                 return true;
+            /** Respond to a click on the "Home" menu option */
             case R.id.home:
                 Intent welcomeIntent = new Intent(CatalogActivity.this, WelcomeActivity.class);
                 startActivity(welcomeIntent);

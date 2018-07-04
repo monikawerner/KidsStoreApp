@@ -13,7 +13,6 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.android.kidsstoreapp.data.KidsContract.KidsEntry;
 
 public class ProductCursorAdapter extends CursorAdapter {
@@ -87,15 +86,15 @@ public class ProductCursorAdapter extends CursorAdapter {
                     ContentValues values = new ContentValues();
                     values.put(KidsEntry.COLUMN_QUANTITY, quantityInt - 1);
                     if (quantityInt == 3) {
-                        Toast.makeText(view.getContext(), "Only two left", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), R.string.two_left, Toast.LENGTH_SHORT).show();
                     }
                     int rowsAffected = view.getContext().getContentResolver().update(currentProductUri, values, null, null);
                     if (rowsAffected == 0) {
-                        Toast.makeText(view.getContext(), "Error with updating the book", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), R.string.error_update, Toast.LENGTH_SHORT).show();
                     }
                 } else {
 
-                    Toast.makeText(view.getContext(), "Cannot sale", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), R.string.cannot_sale, Toast.LENGTH_SHORT).show();
                 }
             }
         });

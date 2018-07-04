@@ -1,18 +1,31 @@
 <resources>
     <string name="app_name">Kids Store Inventory</string>
+
+    <!-- WelcomeActivity -->
     <string name="welcome">Welcome to the Kids Store Inventory</string>
     <string name="catalog">Catalog</string>
-    <string name="inventory">Inventory</string>
     <string name="add">Add product</string>
+
+    <!-- CatalogActivity -->
+    <string name="inventory">Inventory</string>
+    <string name="empty_inventory">There are no products in the inventory</string>
+
+    <!-- Menu in CatalogActivity -->
+    <string name="action_insert_dummy_data">Insert Dummy Product</string>
+    <string name="action_delete_all">Delete All</string>
+    <string name="add_product">Add New Product</string>
+    <string name="home">Home</string>
+    <string name="insert_dummy_product_msg">Dummy Product has been inserted</string>
+    <string name="delete_all__products_msg">All products have been deleted</string>
     <string name="products">Products</string>
     <string name="action_save">Save</string>
-    <string name="home">Home</string>
-    <string name="empty_inventory">In the inventory there is not any product</string>
-    <string name="add_product">Add New Product</string>
-    <string name="action_delete">Delete</string>
-    <string name="action_delete_all">Delete All</string>
     <string name="delete_all_msg">Delete all products?</string>
-    <string name="action_insert_dummy_data">Insert Dummy Product</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- EditorActivity -->
+    <string name="editor_activity_title_add">Add product</string>
+    <string name="editor_activity_title_edit">Edit product</string>
     <string name="product_name">Product Name</string>
     <string name="hint_product_name">Name</string>
     <string name="supplier">Supplier</string>
@@ -21,17 +34,28 @@
     <string name="call">Call to order</string>
     <string name="category">Category</string>
     <string name="price">Price</string>
-    <string name="hint_price">Price</string>
     <string name="price_unit">zl</string>
     <string name="quantity">Quantity</string>
     <string name="hint_quantity">Quantity</string>
-    <string name="editor_activity_title_add">Add product</string>
-    <string name="editor_activity_title_edit">Edit product</string>
+    <string name="plus">Plus Button</string>
+    <string name="minus">Minus Button</string>
+    <string name="quantity_few">There are few items in the stock</string>
+
+    <!-- Product category -->
     <string name="category_other">Other</string>
     <string name="category_clothes">Clothes</string>
     <string name="category_toys">Toys</string>
     <string name="category_kids_room">Kids Room</string>
     <string name="category_health_and_hygiene">Health and Hygiene</string>
+
+    <!-- Saving products messages -->
+    <string name="name_msg">Product requires a name</string>
+    <string name="quantity_msg">Please enter the valid quantity</string>
+    <string name="price_msg">Please enter the valid price</string>
+    <string name="supplier_msg">Please enter the supplier name</string>
+    <string name="phone_msg">Please enter the supplier phone</string>
+
+    <!-- Insert, update and delete messages -->
     <string name="editor_insert_failed">There was a problem with saving the product.</string>
     <string name="editor_insert_successful">The product has been saved.</string>
     <string name="editor_update_failed">There was a problem with updating the product.</string>
@@ -40,9 +64,13 @@
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep editing</string>
     <string name="delete_dialog_msg">Delete this product?</string>
-    <string name="delete">Delete</string>
-    <string name="cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
     <string name="editor_delete_failed">There was a problem with deleting the product.</string>
     <string name="editor_delete_successful">The product has been deleted.</string>
+
+    <!-- Sale Button-->
+    <string name="two_left">Only two products left</string>
+    <string name="error_update">Error with updating the product</string>
     <string name="sale">Sale</string>
+    <string name="cannot_sale">Cannot sale. There are no products in the inventory</string>
 </resources>

@@ -11,13 +11,13 @@
         android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:fontFamily="casual"
-        android:textSize="18sp"
-        android:text="@string/welcome"
+        android:layout_above="@+id/welcome_image"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/welcome_image"/>
+        android:fontFamily="casual"
+        android:text="@string/welcome"
+        android:textColor="@color/black"
+        android:textSize="@dimen/welcome_text_size"
+        android:textStyle="bold" />
 
 
     <ImageView
@@ -25,37 +25,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/welcome_image"
-        />
+        android:src="@drawable/welcome_image" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
         android:paddingBottom="@dimen/padding">
 
         <TextView
             android:id="@+id/catalog"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:fontFamily="casual"
-            android:textStyle="bold"
-            android:text="@string/catalog"
-            android:gravity="center"/>
+            style="@style/ActivitiesStyle"
+            android:text="@string/catalog" />
 
         <TextView
             android:id="@+id/add"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="@string/add"
-            android:fontFamily="casual"
-            android:gravity="center"/>
+            style="@style/ActivitiesStyle"
+            android:text="@string/add" />
 
     </LinearLayout>
 

@@ -2,5 +2,15 @@
 <resources>
     <dimen name="catalog_text_view_padding">16dp</dimen>
     <dimen name="padding">16dp</dimen>
+    <dimen name="small_padding">8dp</dimen>
+    <dimen name="very_small_padding">4dp</dimen>
     <dimen name="padding_welcome">64dp</dimen>
+    <dimen name="no_products_text_size">16sp</dimen>
+    <dimen name="spinner_height">48dp</dimen>
+    <dimen name="plus_minus_size">35dp</dimen>
+    <dimen name="fab_margin">50dp</dimen>
+    <dimen name="welcome_text_size">18sp</dimen>
+    <dimen name="list_item_product_name">20sp</dimen>
+    <dimen name="supplier_container_width">160dp</dimen>
+    <dimen name="price_quantity_container_width">120dp</dimen>
 </resources>

@@ -10,11 +10,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-
 import com.example.android.kidsstoreapp.data.KidsContract.KidsEntry;
-
-
-
 
 import static android.content.UriMatcher.NO_MATCH;
 
@@ -210,7 +206,6 @@ public class KidsProvider extends ContentProvider {
      * Return the number of rows that were successfully updated.
      */
     private int updateProduct(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        /** If there are no values to update, then don't try to update the database */
         if (values.size() == 0) {
             return 0;
         }
@@ -251,7 +246,7 @@ public class KidsProvider extends ContentProvider {
 
 
     /**
-     * helper methods to validate data put by a user in editor - used when insert and update
+     * Helper methods to validate data put by a user in editor - used when insert and update
      **/
 
     private void validateName(ContentValues values) {

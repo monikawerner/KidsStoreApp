@@ -24,7 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/welcome_image"/>
+            android:contentDescription="@null"
+            android:src="@drawable/welcome_image" />
 
         <TextView
             android:id="@+id/empty_title_text"
@@ -33,11 +34,11 @@
             android:layout_below="@+id/image"
             android:layout_centerHorizontal="true"
             android:fontFamily="casual"
-            android:paddingTop="16dp"
+            android:paddingTop="@dimen/padding"
             android:text="@string/empty_inventory"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="@dimen/no_products_text_size"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/empty_subtitle_text"
@@ -46,9 +47,9 @@
             android:layout_below="@+id/empty_title_text"
             android:layout_centerHorizontal="true"
             android:fontFamily="casual"
-            android:paddingTop="8dp"
+            android:paddingTop="@dimen/small_padding"
             android:text="@string/add_product"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent" />
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -57,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/add_to_list"/>
+        android:contentDescription="@string/add_product"
+        android:src="@drawable/add_to_list" />
 
 </RelativeLayout>
